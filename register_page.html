@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Register</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="bootstrap-3.3.6-dist\css\bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="bootstrap-3.3.6-dist\js\bootstrap.min.js"></script>
+  
+  <?php
+  
+  if ($_SERVER["REQUEST_METHOD"] == "POST"){
+	 $hostname="student-db.cse.unt.edu";  
+	$user="kcs0139";
+	$count=0;
+	$pwd="kcs0139";
+	
+  $nameErr= $uname = $passErr = $pwd1 = $lname = $lnameerr = $euid = $euiderr = $uid = $uiderr = $dept = $depterr = "";
+	  
+	if($database=mysql_connect($hostname,$user,$pwd))
+	{
+		
+		$conn=mysql_select_db("kcs0139");
+		
+        		//echo 'Username and Password Found';
+				
+		if (empty($_POST["firstname"])) {
+				$nameErr = "Firstname is required";
+		} else {
+					$uname = $_POST["username"];
+					if (!preg_match("/^[a-zA-Z ]*$/",$uname)) {
+					$nameErr = "Only letters and white space allowed"; 
+					}			
+				}			
+		if (empty($_POST["lastname"])) {
+							$lnameerr = "Lastname is required";
+		} else {
+					$lname= $_POST["lastname"];
+					if (!preg_match("/^[a-zA-Z ]*$/",$lname)) {
+					$lnameerr = "Only letters and white space allowed"; 
+					}
+				}
+		if (empty($_POST["untid"])) {
+							$uiderr = "UNT ID is required";
+		} else {
+					$uid= $_POST["untid"];
+					if (!preg_match("/^[0-9]*$/",$name)) {
+					$uiderr = "Only numbers are allowed"; 
+					}
+				}
+				
+		if (empty($_POST["department"])) {
+							$depterr = "department is required";
+		} else {
+					$dept= $_POST["department"];
+					if (!preg_match("/^[a-zA-Z ]*$/",$name)) {
+					$depterr = "Only letters and white space allowed"; 
+					}
+				}
+		
+		if (empty($_POST["euid"])) {
+							$euiderr = "euid is required";
+		} else {
+					$euid= $_POST["euid"];
+					if (!preg_match("/^[a-zA-Z0-9 ]*$/",$name)) {
+					$euiderr = "Only letters and numbers allowed"; 
+					}
+				}
+				
+		if (empty($_POST["password"])) {
+							$passErr = "password is required";
+		} else {
+					$pwd1= $_POST["password"];
+					 
+					}
+				}
+		if(nameErr && lnameerr && euiderr && passErr && depterr && uiderr == ""){
+			$result=mysql_query("INSERT INTO user (FirstName,LastName,Department,UntId,UserName,Password) VALUES ('$name','$lname','$dept','$uid','$euid','$pwd1');");
+		
+		header("Location:index.php");
+		}
+		
+	}
+  }
+?>
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Tipster</a>
+	<p>  Ask anything...Student Digest</p>
+    </div>
+	
+   
+  </div>
+</nav>
+
+<div class="container">
+    <h1 class="well">Registration Form</h1>
+	<div class="col-lg-12 well">
+	<div class="row">
+				<form role="form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+					<div class="col-sm-12">
+						<div class="row">
+							<div class="col-sm-6 form-group">
+								<label>First Name*</label>
+								<input type="text" name="firstname" placeholder="Enter First Name Here.." class="form-control">
+								<span class="error"> <?php echo $nameErr;?></span>
+							</div>
+							<div class="col-sm-6 form-group">
+								<label>Last Name*</label>
+								<input type="text" name="lastname" placeholder="Enter Last Name Here.." class="form-control">
+								<span class="error"> <?php echo $lnameerr;?></span>
+							</div>
+						</div>					
+						<div class="form-group">
+							<label>Address</label>
+							<textarea placeholder="Enter Address Here.." name="address" rows="3" class="form-control"></textarea>
+						</div>	
+						<div class="row">
+							<div class="col-sm-4 form-group">
+								<label>City</label>
+								<input type="text" placeholder="Enter City Name Here.." class="form-control">
+							</div>	
+							<div class="col-sm-4 form-group">
+								<label>State</label>
+								<input type="text" placeholder="Enter State Name Here.." class="form-control">
+							</div>	
+							<div class="col-sm-4 form-group">
+								<label>Zip</label>
+								<input type="text" placeholder="Enter Zip Code Here.." class="form-control">
+							</div>		
+						</div>
+						<div class="row">
+							<div class="col-sm-6 form-group">
+								<label>UNT Id*</label>
+								<input type="text" name="untid" placeholder="Enter Id Here.." class="form-control">
+								<span class="error"> <?php echo $uiderr;?></span>
+							</div>		
+							<div class="col-sm-6 form-group">
+								<label>Department*</label>
+								<input type="text" name="department" placeholder="Enter department Name Here.." class="form-control">
+								<span class="error"> <?php echo $depterr;?></span>
+							</div>	
+						</div>						
+					<div class="form-group">
+						<label>Phone Number</label>
+						<input type="text" placeholder="Enter Phone Number Here.." class="form-control">
+					</div>		
+					<div class="form-group">
+						<label>EUID*</label>
+						<input type="text" name="euid" placeholder="Enter Email Address Here.." class="form-control">
+						<span class="error"> <?php echo $euiderr;?></span>
+						<span class="error"> <?php echo $euiderr;?></span>
+					</div>	
+					<div class="form-group">
+						<label>Password*</label>
+						<input type="password" name="password" placeholder="Enter password Here.." class="form-control">
+						<span class="error"> <?php echo $passErr;?></span>
+						<p class="help-block">Password should be at least 4 characters</p>
+					</div>
+					<center><button type="submit" class="btn btn-primary">Submit</button>	</center>				
+					</div>
+				</form> 
+				</div>
+	</div>
+	</div>
+
+
+
+<nav class="navbar navbar-inverse navbar-fixed-bottom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">All copyrights reserved @ UNT Denton</a>
+    </div>
+   
+  </div>
+</nav>
+</body>
+</html>
